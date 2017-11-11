@@ -1,19 +1,22 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"time"
+)
 
-func (repository *TicketRepository) Validate(ticket *Ticket) (string) {
-	if len(ticket.Number) < 12 {
-		fmt.Println("ERROR")
-		return "ERROR"
-	} else if len(ticket.Number) > 18 {
-		fmt.Println("INVALID")
-		return "INVALID"
-	} else if _, ok := repository.Tickets[ticket.Number] ; ok {
-		fmt.Println("VALIDATED")
-		return "VALIDATED"
+func (repository *TicketRepository) Validate(ticket *Ticket) (string, Ticket) {
+	if len(ticket.Code) < 12 {
+		return "ERROR", *ticket
+	} else if len(ticket.Code) > 18 {
+		return "INVALID", *ticket
+	} else if _, ok := repository.Tickets[ticket.Code] ; ok {
+		return "VALIDATED", repository.Tickets[ticket.Code]
 	}
-	fmt.Println(ticket.Number)
-	repository.Tickets[ticket.Number] = ticket.Number
-	return "SUCCESS"
+	repository.Tickets[ticket.Code] = Ticket{
+		ticket.Code,
+		time.Now().Format(time.RFC3339),
+	}
+	fmt.Println(time.Now().Format(time.RFC3339))
+	return "SUCCESS", repository.Tickets[ticket.Code]
 }
