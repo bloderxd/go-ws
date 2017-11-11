@@ -6,7 +6,7 @@ import (
 	"net"
 )
 
-const port string = ":8080"
+const port = ":8080"
 
 func Routes(ticket * Ticket, ticketRepository *TicketRepository) {
 	router := gin.Default()
