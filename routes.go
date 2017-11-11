@@ -3,39 +3,14 @@ package main
 import (
 	"github.com/gin-gonic/gin"
 	"net/http"
-	"net"
 )
 
 const port = ":8080"
 
 func Routes(ticket * Ticket, ticketRepository *TicketRepository) {
 	router := gin.Default()
-	ipRoute(router)
 	ticketHotValidationRoute(router, ticket, ticketRepository)
 	router.Run(port)
-}
-
-func ipRoute(router *gin.Engine) {
-	getRouter(router, "/ip", func(c *gin.Context) {
-		if response, success := ip(); success {
-			c.JSON(http.StatusOK, gin.H{"ip" : response})
-		} else {
-			c.JSON(http.StatusBadRequest, gin.H{"error" : response})
-		}
-	})
-}
-
-func ip() (string, bool) {
-	conn, err := net.Dial("udp", "8.8.8.8:80")
-	if err != nil {
-		return err.Error(), false
-	}
-	defer conn.Close()
-	localAddr := conn.LocalAddr().(*net.UDPAddr)
-	if localAddr != nil {
-		return localAddr.IP.String(), true
-	}
-	return "ERROR", false
 }
 
 func ticketHotValidationRoute(router *gin.Engine, ticket *Ticket, repository *TicketRepository) {
