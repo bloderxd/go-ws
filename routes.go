@@ -25,6 +25,7 @@ func ticketHotValidationRoute(router *gin.Engine, ticket *Ticket, repository *Ti
 
 func (ticket *Ticket) validateResponse(context *gin.Context, repository *TicketRepository) {
 	if str, response := repository.Validate(ticket); str == "SUCCESS" {
+		ticket.PersistTicket()
 		context.JSON(http.StatusOK, gin.H{})
 	} else if str == "VALIDATED" {
 		context.JSON(http.StatusBadRequest, gin.H{
