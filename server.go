@@ -40,5 +40,6 @@ func infoKey() {
 func main() {
 	infoKey()
 	ticket, repo := &Ticket{}, &TicketRepository{ make(map[string]Ticket) }
+	repo.PersistentTickets()
 	Routes(ticket, repo)
 }
