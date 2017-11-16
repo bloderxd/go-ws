@@ -7,14 +7,13 @@ import (
 )
 
 type Ticket struct {
-	Code string ""
-	ReadAt string ""
+	Code   string
+	ReadAt string
 }
 
 type TicketRepository struct {
-	Tickets map[string]Ticket
+	Tickets []Ticket
 }
-
 
 func ip() (string, bool) {
 	conn, err := net.Dial("udp", "8.8.8.8:80")
@@ -39,7 +38,8 @@ func infoKey() {
 
 func main() {
 	infoKey()
-	ticket, repo := &Ticket{}, &TicketRepository{ make(map[string]Ticket) }
-	repo.PersistentTickets()
+	ticket, repo := &Ticket{}, &TicketRepository{}
+	CreateTicketPersistence()
+	repo.FetchAllTickets()
 	Routes(ticket, repo)
 }
