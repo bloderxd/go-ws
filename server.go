@@ -39,7 +39,7 @@ func infoKey() {
 func main() {
 	infoKey()
 	ticket, repo := &Ticket{}, &TicketRepository{}
-	CreateTicketPersistence()
+	ConfigAutoMigration()
 	repo.FetchAllTickets()
 	Routes(ticket, repo)
 }

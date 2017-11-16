@@ -5,14 +5,14 @@ import (
 	_ "github.com/jinzhu/gorm/dialects/sqlite"
 	"log"
 	"os"
+	"fmt"
 )
 
-func CreateTicketPersistence() {
+func ConfigAutoMigration() {
 	db, err := canOpenConnection()
 	if weHaveNotProblemWith(err) && !db.HasTable(&Ticket{}) {
 		defer db.Close()
 		db.AutoMigrate(&Ticket{})
-		db.Create(&Ticket{})
 	}
 }
 
@@ -21,6 +21,7 @@ func(repository *TicketRepository) FetchAllTickets()  {
 	if weHaveNotProblemWith(err) {
 		defer db.Close()
 		db.Find(&repository.Tickets)
+		fmt.Println(repository.Tickets)
 	}
 }
 
